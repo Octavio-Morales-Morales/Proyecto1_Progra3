@@ -27,7 +27,7 @@ public class Turnos {
     
     public Turnos(int turnoId, String codigoTurno, int servicioId, LocalDate generacion, 
     LocalTime horaGeneracion, int estadoId, int prioridad, Integer ventanillaId){
-        
+        this.turnoId = turnoId;
         this.codigoTurno = codigoTurno;
         this.estadoId = estadoId;
         this.generacion = generacion;
@@ -38,17 +38,17 @@ public class Turnos {
     
     }
     
-    public int setTurnoId(){
+    public int getTurnoId(){
         return turnoId;
     }
-    public void getTurnoId(int turnoId){
+    public void setTurnoId(int turnoId){
         this.turnoId =turnoId;
     }
     
-    public String setCodigoTurno(){
+    public String getCodigoTurno(){
         return codigoTurno;
     }
-    public void getCodigoTurno(String codigoTurno){
+    public void setCodigoTurno(String codigoTurno){
         this.codigoTurno = codigoTurno;
     }
     public int getServicioId(){
@@ -69,22 +69,22 @@ public class Turnos {
     public void sethoraGeneracion(LocalTime horaGeneracion){
         this.horaGeneracion = horaGeneracion;
     }
-    public int setEstadoId(){
+    public int getEstadoId(){
         return estadoId;
     }
-    public void getEstadoId(int estadoId){
+    public void setEstadoId(int estadoId){
         this.estadoId = estadoId;
     }
-    public int setPrioridad(){
+    public int getPrioridad(){
         return prioridad;
     }
-    public void getPrioridad(int prioridad){
+    public void setPrioridad(int prioridad){
         this.prioridad = prioridad;
     }
-    public Integer setVentanillaId(){
+    public Integer getVentanillaId(){
         return ventanillaId;
     }
-    public void getVentanillaId(Integer ventanillaId){
+    public void setVentanillaId(Integer ventanillaId){
         this.ventanillaId = ventanillaId;
     }
 }
