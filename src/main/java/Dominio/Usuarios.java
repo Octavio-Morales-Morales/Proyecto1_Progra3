@@ -34,46 +34,46 @@ public class Usuarios {
         
     }
     
-    public int setUsuarioId(){
+    public int getUsuarioId(){
         return usuarioId;
     }
-    public void getUsuarioId(int usuarioId){
+    public void setUsuarioId(int usuarioId){
         this.usuarioId = usuarioId;
     }
-    public String setNombre(){
+    public String getNombre(){
         return nombre;
     }
-    public void getNombre(String nombre){
+    public void setNombre(String nombre){
         this.nombre = nombre;
     }
-    public String setUsuario(){
+    public String getUsuario(){
         return usuario;
     }
-    public void getUsuario(String usuario){
+    public void setUsuario(String usuario){
         this.usuario = usuario;
     }
-    public String setContraseña(){
+    public String getContraseña(){
         return contraseña;
     }
-    public void getContraseña(String contraseña){
+    public void setContraseña(String contraseña){
         this.contraseña = contraseña;
     }
-    public int setRolId(){
+    public int getRolId(){
         return rolId;
     }
-    public void getRolId(int rolId){
+    public void setRolId(int rolId){
         this.rolId = rolId;
     }
     public boolean isActivoUsuario(){
         return activo;
     }
-    public void getActivoUsuario(boolean activo){
+    public void setActivoUsuario(boolean activo){
         this.activo = activo;
     }
-    public LocalDateTime setFechaCreacion(){
+    public LocalDateTime getFechaCreacion(){
         return fechaCreacion;
     }
-    public void getFechaCreacion(LocalDateTime fechaCreacion){
+    public void setFechaCreacion(LocalDateTime fechaCreacion){
         this.fechaCreacion = fechaCreacion;
     }
     
