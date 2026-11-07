@@ -4,12 +4,16 @@
  */
 package Dominio;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 /**
  *
  * @author COTO
  */
-public class Atencion {
+public class Atencion implements Serializable{
+    
+   private static final long serialVersionUID = 1L;
+   
    private int atencionId;
    private int funcionarioId;
    private LocalDateTime  horaFinalizacion;

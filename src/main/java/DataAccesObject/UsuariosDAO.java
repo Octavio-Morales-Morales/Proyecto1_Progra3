@@ -24,7 +24,8 @@ public class UsuariosDAO implements InterfaceUsuarios {
     
     @Override
     public Usuarios autenticar(String nombreusuario, String Contraseña) {
-        String sql = "SELECT * FROM USUARIO WHERE usuario = ? AND password_hash = ? AND activo = 1";
+        String sql =  "SELECT usuario_id, nombre, usuario, password_hash, rol_id, activo, fecha_creacion FROM USUARIO WHERE usuario = ? AND password_hash = ? AND activo = 1";
+        
         try(Connection con = obtenerConexion();
                 PreparedStatement ps = con.prepareStatement(sql)){
             ps.setString(1, nombreusuario);
@@ -43,7 +44,7 @@ public class UsuariosDAO implements InterfaceUsuarios {
 
     @Override
     public void crear(Usuarios usuario) {
-        String sql ="INSERT INTO USUARIO (nombre, usuario, password_hash, rol_id, activo) VALUES (?,?,?,?,?)";
+        String sql ="INSERT INTO USUARIO (nombre, usuario, password_hash, rol_id, activo, fecha_creacion) VALUES (?,?,?,?,?, CURRENT_TIMESTAMP)";
         
         try(Connection con = obtenerConexion();
             PreparedStatement ps = con.prepareStatement(sql)){

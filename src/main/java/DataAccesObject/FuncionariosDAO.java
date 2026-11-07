@@ -64,7 +64,7 @@ public class FuncionariosDAO implements InterfaceFuncionarios {
 
     @Override
     public Funcionarios obtenerFuncionarioPorId(int funcionarioId) {
-        String sql = "SELECT * FROM FUNCIONARIO WHERE funcionario_id = ?";
+        String sql = "SELECT funcionario_id, usuario_id, nombre_completo, identificacion, activo FROM FUNCIONARIO WHERE funcionario_id = ?";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -93,7 +93,7 @@ public class FuncionariosDAO implements InterfaceFuncionarios {
 
     @Override
     public Funcionarios ObtenerFuncionarioPorUsuarioId(int UsuarioId) {
-        String sql = "SELECT * FROM FUNCIONARIO WHERE usuario_id = ?";
+        String sql = "SELECT funcionario_id, usuario_id, nombre_completo, identificacion, activo FROM FUNCIONARIO WHERE usuario_id = ?";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -114,7 +114,7 @@ public class FuncionariosDAO implements InterfaceFuncionarios {
     @Override
     public List<Funcionarios> listarFuncionarios() {
        List<Funcionarios> lista = new ArrayList<>();
-        String sql = "SELECT * FROM FUNCIONARIO";
+        String sql = "SELECT funcionario_id, usuario_id, nombre_completo, identificacion, activo FROM FUNCIONARIO";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);

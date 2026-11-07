@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import Dominio.Ventanillas;
 /**
  *
  * @author COTO
@@ -40,8 +41,8 @@ public class VentanillaDAO implements InterfaceVentanilla {
     }
 
     @Override
-    public List<Integer> ListaVentanillasActivas() {
-        List<Integer> activas = new ArrayList<>();
+    public List<Ventanillas> ListaVentanillasActivas() {
+        List<Ventanillas> activas = new ArrayList<>();
         String sql = "SELECT ventanilla_id FROM VENTANILLA WHERE activo = 1";
         
         try (Connection con = obtenerConexion();
@@ -49,7 +50,13 @@ public class VentanillaDAO implements InterfaceVentanilla {
              ResultSet rs = ps.executeQuery()) {
             
             while (rs.next()) {
-                activas.add(rs.getInt("ventanilla_id"));
+                Ventanillas ven = new Ventanillas();
+                ven.setVentanillaId(rs.getInt("ventanilla_id"));
+                ven.setNumero(rs.getInt("numero_ventanilla"));
+                ven.setEstado(rs.getString("estado"));
+                ven.setActivoVentanilla(rs.getInt("activo") == 1);
+                
+                activas.add(ven);
             }
             
         } catch (SQLException e) {

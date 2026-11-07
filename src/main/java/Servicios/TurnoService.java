@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class TurnoService {
     private final InterfaceTurno turnoDAO;
+    
+    public TurnoService() {
+        this.turnoDAO = null;
+    }
     public TurnoService(InterfaceTurno turnoDAO) {
         this.turnoDAO = turnoDAO;
     }

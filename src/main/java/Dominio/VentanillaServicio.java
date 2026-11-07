@@ -4,11 +4,13 @@
  */
 package Dominio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author COTO
  */
-public class VentanillaServicio {
+public class VentanillaServicio implements Serializable {
     private int ventanillaId;
     private int servicioId;
     private boolean activo;

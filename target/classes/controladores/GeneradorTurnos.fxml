@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.GeneradorTurnosController">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   
+   <children>
+      <Label text="GENERADOR DE TURNOS" textFill="#1a237e">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+
+      <Label text="Seleccione el servicio que necesita:" textFill="#424242">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+
+      <!-- Botones de servicios -->
+      <VBox alignment="CENTER" spacing="12.0">
+         <children>
+            <Button fx:id="btnServicioA" mnemonicParsing="false" prefHeight="50.0" prefWidth="320.0" style="-fx-background-color: #1565c0; -fx-text-fill: white; -fx-font-size: 15;" text="A - Información General" />
+            <Button fx:id="btnServicioB" mnemonicParsing="false" prefHeight="50.0" prefWidth="320.0" style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-size: 15;" text="B - Trámites" />
+            <Button fx:id="btnServicioC" mnemonicParsing="false" prefHeight="50.0" prefWidth="320.0" style="-fx-background-color: #ef6c00; -fx-text-fill: white; -fx-font-size: 15;" text="C - Pagos" />
+            <Button fx:id="btnServicioD" mnemonicParsing="false" prefHeight="50.0" prefWidth="320.0" style="-fx-background-color: #6a1b9a; -fx-text-fill: white; -fx-font-size: 15;" text="D - Atención Preferencial" />
+         </children>
+      </VBox>
+
+      <!-- Resultado del turno generado -->
+      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);" visible="false" fx:id="panelResultado">
+         <padding>
+            <Insets bottom="25.0" left="40.0" right="40.0" top="25.0" />
+         </padding>
+         <children>
+            <Label text="SU TURNO ES:" textFill="#616161">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            
+            <Label fx:id="lblNumeroTurno" text="A023" textFill="#1a237e">
+               <font>
+                  <Font name="System Bold" size="56.0" />
+               </font>
+            </Label>
+            
+            <Label fx:id="lblServicio" text="Servicio: Trámites" textFill="#424242">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            
+            <Label fx:id="lblFechaHora" text="15/09/2026 17:25" textFill="#757575" />
+         </children>
+      </VBox>
+
+      <Button fx:id="btnNuevoTurno" mnemonicParsing="false" prefHeight="42.0" prefWidth="220.0" style="-fx-background-color: #1a237e; -fx-text-fill: white;" text="Generar otro turno" visible="false" />
+   </children>
+</VBox>

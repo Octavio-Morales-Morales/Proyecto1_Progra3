@@ -10,7 +10,7 @@ import java.util.List;
  * @author COTO
  */
 public interface InterfaceAtencion {
-    void registrarAtencion(Atencion atencion);
+    int registrarAtencion(Atencion atencion);
     void registrarInicio(int atencionId);
     void registrarFin(int atencionId, String observaciones);
     int AtendidosPorFuncionarios(int funcionarioId);

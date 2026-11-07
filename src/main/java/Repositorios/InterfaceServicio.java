@@ -4,11 +4,12 @@
  */
 package Repositorios;
 import java.util.List;
+import Dominio.Servicio;
 /**
  *
  * @author COTO
  */
 public interface InterfaceServicio {
-    List<String> ListarServiciosDisponibles();
+    List<Servicio> ListarServiciosDisponibles();
     int obtenerNombreServicio(String nombreServicio);
 }

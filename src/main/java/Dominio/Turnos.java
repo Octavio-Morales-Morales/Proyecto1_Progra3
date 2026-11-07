@@ -4,6 +4,7 @@
  */
 package Dominio;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalTime;
  *
  * @author COTO
  */
-public class Turnos {
+public class Turnos implements Serializable {
     private int turnoId;
     private String codigoTurno;
     private int servicioId;

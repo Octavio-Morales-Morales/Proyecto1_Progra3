@@ -11,28 +11,38 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import Dominio.Servicio;
 /**
  *
  * @author COTO
  */
 public class ServicioDAO implements InterfaceServicio {
+
     private Connection obtenerConexion() throws SQLException {
         return DataAccesObject.ConexionBD.getConexion();
     }
     
     @Override
-    public List<String> ListarServiciosDisponibles() {
-        List<String> servicios = new ArrayList<>();
-        String sql = "SELECT descripcion FROM SERVICIO";
+    public List<Servicio> ListarServiciosDisponibles() {
+        List<Servicio> servicios = new ArrayList<>();
+        String sql = "SELECT servicio_id, descripcion, letra_codigo, activo FROM SERVICIO WHERE activo = 1";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             
             while (rs.next()) {
-                servicios.add(rs.getString("descripcion"));
-            }
+                
+                Servicio svc = new Servicio();
+                svc.setServicioId(rs.getInt("servicio_id"));
+                svc.setNombre(rs.getString("descripcion"));
+                svc.setLetraCodigo(rs.getString("letra_codigo"));
+                
+                svc.setActivo(rs.getInt("activo") == 1);
+                
+                servicios.add(svc);
             
+            }
         } catch (SQLException e) {
             System.err.println("Error al listar servicios disponibles: " + e.getMessage());
         }

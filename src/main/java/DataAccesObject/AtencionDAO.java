@@ -22,7 +22,7 @@ public class AtencionDAO implements InterfaceAtencion{
     } 
 
     @Override
-    public void registrarAtencion(Atencion atencion) {
+    public int registrarAtencion(Atencion atencion) {
         String sql = "INSERT INTO ATENCION (turno_id, ventanilla_id, funcionario_id, hora_llamado) VALUES (?,?,?,?)";
         try (Connection con = obtenerConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -39,10 +39,16 @@ public class AtencionDAO implements InterfaceAtencion{
             
             ps.executeUpdate();
             System.out.println("Atención registrada con éxito.");
-            
+           
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()){
+            if (generatedKeys.next()){
+                return generatedKeys.getInt(1);
+            }
+            }
         } catch (SQLException e) {
             System.err.println("Error al registrar atención: " + e.getMessage());
         }
+        return 0;
     }
 
     @Override
@@ -97,9 +103,7 @@ public class AtencionDAO implements InterfaceAtencion{
 
     @Override
     public int TurnosPorServicio(int servicioId) {
-        String sql = "SELECT COUNT(*) FROM ATENCION a " 
-                + "INNER JOIN TURNO t ON a.turno_id = t.turno_id " 
-                + "WHERE t.servicio_id = ?";
+        String sql = "SELECT COUNT(*) FROM ATENCION a INNER JOIN TURNO t ON a.turno_id = t.turno_id WHERE t.servicio_id = ?";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -118,7 +122,7 @@ public class AtencionDAO implements InterfaceAtencion{
 
     @Override
     public double PromedioDeEspera() {
-        String sql = "SELECT AVG(TIMESTAMPDIFF(MINUTE, t.generacion, a.hora_inicio)) FROM ATENCION a " 
+        String sql = "SELECT AVG((CAST(a.hora_inicio AS DATE) - CAST(t.generacion AS DATE)) * 1440) FROM ATENCION a " 
                 + "INNER JOIN TURNO t ON a.turno_id = t.turno_id "
                 + "WHERE a.hora_inicio IS NOT NULL";
         
@@ -138,8 +142,9 @@ public class AtencionDAO implements InterfaceAtencion{
 
     @Override
     public double PromedioAtencio() {
-        String sql = "SELECT AVG(TIMESTAMPDIFF(MINUTE, hora_inicio, hora_finalizacion)) FROM ATENCION " 
+        String sql = "SELECT AVG((CAST(hora_finalizacion AS DATE) - CAST(hora_inicio AS DATE)) * 1440) FROM ATENCION " 
                 + "WHERE hora_inicio IS NOT NULL AND hora_finalizacion IS NOT NULL";
+        
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);

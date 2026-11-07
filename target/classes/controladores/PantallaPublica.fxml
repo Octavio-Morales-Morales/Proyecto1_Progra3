@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #0d1b2a;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.PantallaPublicaController">
+   
+   <!-- Encabezado -->
+   <top>
+      <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #1b263b;">
+         <padding>
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+         </padding>
+         <children>
+            <Label text="SALA DE ESPERA" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblHora" text="17:28:45" textFill="#90caf9">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+
+   <!-- Centro: Último turno llamado -->
+   <center>
+      <VBox alignment="CENTER" spacing="15.0">
+         <padding>
+            <Insets bottom="20.0" top="30.0" />
+         </padding>
+         <children>
+            <Label text="ÚLTIMO TURNO LLAMADO" textFill="#90caf9">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            
+            <Label fx:id="lblUltimoTurno" text="A023" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="96.0" />
+               </font>
+            </Label>
+            
+            <Label fx:id="lblVentanilla" text="→  VENTANILLA 4" textFill="#4fc3f7">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </center>
+
+   <!-- Abajo: Historial reciente -->
+   <bottom>
+      <VBox spacing="10.0" style="-fx-background-color: #1b263b;">
+         <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="15.0" />
+         </padding>
+         <children>
+            <Label text="Turnos llamados recientemente" textFill="#90caf9">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ListView fx:id="lstRecientes" prefHeight="160.0" style="-fx-background-color: #0d1b2a; -fx-control-inner-background: #0d1b2a; -fx-text-fill: white;" />
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>

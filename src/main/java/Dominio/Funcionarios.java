@@ -4,11 +4,16 @@
  */
 package Dominio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author COTO
  */
-public class Funcionarios {
+public class Funcionarios implements Serializable {
+    
+   private static final long serialVersionUID = 1L;
+   
    private int funcionarioId;
    private int usuarioId;
    private String nombreCompleto;

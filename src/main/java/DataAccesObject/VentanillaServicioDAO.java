@@ -22,8 +22,13 @@ public class VentanillaServicioDAO implements InterfaceVentanillaServicio {
     @Override
     public void asignarServicioVentanilla(int ventanilla, int servicioId) {
         
-        String sql = "INSERT INTO VENTANILLA_SERVICIO (ventanilla_id, servicio_id, activo) VALUES (?, ?, 1) "
-                   + "ON DUPLICATE KEY UPDATE activo = 1";
+        String sql = "MERGE INTO VENTANILLA_SERVICIO dest USING (SELECT ? as v_id, ? as s_id FROM dual) src "
+                   + "ON (dest.ventanilla_id = src.v_id AND dest.servicio_id = src.s_id) "
+                   + "WHEN MATCHED THEN "
+                   + "  UPDATE SET dest.activo = 1 "
+                   + "WHEN NOT MATCHED THEN "
+                   + "  INSERT (ventanilla_id, servicio_id, activo) VALUES (src.v_id, src.s_id, 1)";
+        
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {

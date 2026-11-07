@@ -27,8 +27,7 @@ public class TurnoDAO implements InterfaceTurno {
     
     @Override
     public void crearTurno(Turnos turno) {
-        String sql = "INSERT INTO TURNO (codigo_turno, estado_id, generacion, hora_generacion, prioridad, servicio_id, ventanilla_id) "
-                   + "VALUES (?, ?, CURDATE(), CURTIME(), ?, ?, ?)";
+        String sql = "INSERT INTO TURNO (codigo_turno, estado_id, generacion, hora_generacion, prioridad, servicio_id, ventanilla_id) VALUES (?, ?, CURDATE(), CURTIME(), ?, ?, ?)";
         
         try (Connection con = obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -81,8 +80,7 @@ public class TurnoDAO implements InterfaceTurno {
             sb.append(",");
         }
     }
-    String sql = "SELECT * FROM TURNO WHERE estado_id = 1 AND servicio_ IN ( " + sb.toString() + ") "
-            + "ORDER BY prioridad DESC, generacion ASC, hora generacion ASC LIMIT 1";
+    String sql = "SELECT * FROM TURNO WHERE estado_id = 1 AND servicio_ IN ( " + sb.toString() + ") ORDER BY prioridad DESC, generacion ASC, hora generacion ASC LIMIT 1";
      try( Connection con = obtenerConexion();
           PreparedStatement ps = con.prepareStatement(sql)){
          for(int i = 0; i < ServicioId.size(); i++){

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package Repositorios;
+import Dominio.Ventanillas;
 import java.util.List;
 /**
  *
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface InterfaceVentanilla {
     void cambiarEstado(int ventanillaId, String estado);
-    List<Integer> ListaVentanillasActivas();
+    List<Ventanillas> ListaVentanillasActivas();
 }
