@@ -80,15 +80,26 @@ public HiloCliente(Socket socket, ServidorCentral servidor, TurnoService turnoSe
                     
                 case "SOLICITAR_SIGUIENTE":
                     int ventanillaId = Integer.parseInt(partes[1]);
-                    int funcionarioId = Integer.parseInt(partes[2]);
-                    
-                    List<Integer> serviciosPermitidos = Arrays.stream(partes[3].split(";"))
-                            .map(Integer::parseInt)
-                            .collect(Collectors.toList());
-                    Turnos proximoTurno = turnoService.solicitarSiguiente(serviciosPermitidos);
-                    int atencionId = atencionService.llamarCliente(proximoTurno.getTurnoId(), ventanillaId, funcionarioId);
-                    
-                    salida.println("OK;" + proximoTurno.getCodigoTurno() + ";" + proximoTurno.getTurnoId() + ";" + atencionId);
+    int funcionarioId = Integer.parseInt(partes[2]);
+
+    // Los servicios permitidos vienen como una lista separada por comas en el campo 3
+    // Ejemplo de comando: SOLICITAR_SIGUIENTE;1;2;1,2,3,4
+    String serviciosStr = partes.length > 3 ? partes[3] : "1,2,3,4";
+    List<Integer> serviciosPermitidos = Arrays.stream(serviciosStr.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+
+    Turnos proximoTurno = turnoService.solicitarSiguiente(serviciosPermitidos);
+    int atencionId = atencionService.llamarCliente(
+            proximoTurno.getTurnoId(), ventanillaId, funcionarioId);
+
+    // Notificar a todas las pantallas públicas (esto es obligatorio)
+    servidor.notificarNuevoLlamado(proximoTurno.getCodigoTurno(), ventanillaId);
+
+    salida.println("OK;" + proximoTurno.getCodigoTurno() + ";" 
+                   + proximoTurno.getTurnoId() + ";" + atencionId);
                    break;
                    
                 case "COMENZAR_TRAMITE":

@@ -42,7 +42,7 @@ public class ClienteSocket {
         try{
             if(entrada != null) entrada.close();
             if(salida != null) salida.close();
-            if(socket != null && socket.isClosed()) socket.close();
+            if(socket != null && !socket.isClosed()) socket.close();
             System.out.println("Recursos de red liberados de forma limpia.");
             
         } catch(IOException e){

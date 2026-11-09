@@ -1,44 +1,45 @@
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\controladores\App.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\controladores\GeneradorTurnosController.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\controladores\LoginController.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\controladores\OperadorVentanillaController.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\controladores\PantallaPublicaController.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\AtencionDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\ConexionBD.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\EstadoTurnoDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\FuncionariosDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\RolDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\ServicioDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\TurnoDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\TurnosTrabajoDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\UsuariosDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\VentanillaDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\DataAccesObject\VentanillaServicioDAO.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Atencion.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\EstadoTurno.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Funcionarios.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Servicio.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Turnos.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\TurnoTrabajo.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Usuarios.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\Ventanillas.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Dominio\VentanillaServicio.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\octavioadriantada\proyectop3\ProyectoP3.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Red\ClienteSocket.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Red\HiloCliente.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Red\ServidorCentral.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceAtencion.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceEstadoTurno.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceFuncionarios.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceRol.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceServicio.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurno.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurnoTrabajo.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurnoTTrabajo.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceUsuarios.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceVentanilla.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceVentanillaServicio.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Servicios\AtencionService.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Servicios\TurnoService.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Servicios\UsuarioService.java
-C:\Users\Public\Proyectos Progra2\Proyecto progra3\Proyecto1_Progra3\src\main\java\Validacion\Turnovalidacion.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\App.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\GeneradorTurnosController.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\LoginController.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\OperadorVentanillaController.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\PantallaPublicaController.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\controladores\Sesion.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\AtencionDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\ConexionBD.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\EstadoTurnoDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\FuncionariosDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\RolDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\ServicioDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\TurnoDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\TurnosTrabajoDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\UsuariosDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\VentanillaDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\DataAccesObject\VentanillaServicioDAO.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Atencion.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\EstadoTurno.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Funcionarios.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Servicio.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Turnos.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\TurnoTrabajo.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Usuarios.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\Ventanillas.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Dominio\VentanillaServicio.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\octavioadriantada\proyectop3\ProyectoP3.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Red\ClienteSocket.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Red\HiloCliente.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Red\ServidorCentral.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceAtencion.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceEstadoTurno.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceFuncionarios.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceRol.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceServicio.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurno.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurnoTrabajo.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceTurnoTTrabajo.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceUsuarios.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceVentanilla.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Repositorios\InterfaceVentanillaServicio.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Servicios\AtencionService.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Servicios\TurnoService.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Servicios\UsuarioService.java
+C:\Users\tadan\Documents\NetBeansProjects\Proyecto1_Progra3\src\main\java\Validacion\Turnovalidacion.java

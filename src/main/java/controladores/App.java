@@ -56,8 +56,8 @@ public class App extends Application {
     public static ClienteSocket getClienteSocket(){
         return clienteSocket;
     }
-    public static void main(String[] args) {
-        launch();
-    }
+   public static void main(String[] args) {
+    launch();
+}
 
 }

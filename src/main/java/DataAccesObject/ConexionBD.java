@@ -12,8 +12,8 @@ import java.sql.SQLException;
  */
 public class ConexionBD {
     private static final String URL = "jdbc:mysql://pma.us.cloudlogin.co:3306/gamabasis_p3g1?useSSL=false&serverTimezone=UTC";
-    private static final String USUARIO = "TU_USUARIO_DE_BASE_DE_DATOS"; 
-    private static final String CONTRASENIA = "TU_CONTRASENIA_DE_BASE_DE_DATOS";
+    private static final String USUARIO = "gamabasis_p3g1"; 
+    private static final String CONTRASENIA = "4b1krJI7E+";
     
     public static Connection getConexion() throws SQLException {
         try {
