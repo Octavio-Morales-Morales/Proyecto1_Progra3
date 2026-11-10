@@ -1,9 +1,8 @@
 package controladores;
 
-import DataAccesObject.UsuariosDAO;
-import Dominio.Usuarios;
-import Servicios.UsuarioService;
+import Red.ClienteSocket;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,11 +16,11 @@ public class LoginController {
     @FXML private Button btnIngresar;
     @FXML private Label lblMensaje;
 
-    private UsuarioService usuarioService;
+    private ClienteSocket cliente;
 
     @FXML
     public void initialize() {
-        usuarioService = new UsuarioService(new UsuariosDAO());
+        cliente = App.getClienteSocket();
         btnIngresar.setOnAction(e -> intentarLogin());
     }
 
@@ -34,22 +33,38 @@ public class LoginController {
             return;
         }
 
-        try {
-            Usuarios u = usuarioService.login(usuario, clave);
-            if (u == null) {
-                lblMensaje.setText("Usuario o contraseña incorrectos.");
-                return;
-            }
-
-            // Guardar quién inició sesión
-            Sesion.setUsuarioActual(u);
-
-            // Ir a la pantalla de operador
-            App.setRoot("OperadorVentanilla");
-
-        } catch (Exception ex) {
-            lblMensaje.setText("Error: " + ex.getMessage());
-            ex.printStackTrace();
+        if (cliente == null) {
+            lblMensaje.setText("No hay conexión con el servidor.");
+            return;
         }
+
+        new Thread(() -> {
+            try {
+                String comando = "LOGIN;" + usuario + ";" + clave;
+                String respuesta = cliente.enviarMensaje(comando);
+
+                Platform.runLater(() -> {
+                    if (respuesta != null && respuesta.startsWith("OK;")) {
+                        String[] partes = respuesta.split(";");
+                        int usuarioId = Integer.parseInt(partes[1]);
+                        String nombre = partes[2];
+                        int rolId = Integer.parseInt(partes[3]);
+
+                        // Guardar sesión básica
+                        Sesion.setUsuarioActual(usuarioId, nombre, rolId);
+
+                        try {
+                            App.setRoot("OperadorVentanilla");
+                        } catch (IOException ex) {
+                            lblMensaje.setText("Error al cargar pantalla.");
+                        }
+                    } else {
+                        lblMensaje.setText("Usuario o contraseña incorrectos.");
+                    }
+                });
+            } catch (Exception ex) {
+                Platform.runLater(() -> lblMensaje.setText("Error de conexión: " + ex.getMessage()));
+            }
+        }).start();
     }
 }

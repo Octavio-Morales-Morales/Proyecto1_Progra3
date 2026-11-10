@@ -1,23 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package controladores;
 
-import Dominio.Usuarios;
-
 public class Sesion {
-    private static Usuarios usuarioActual;
+    private static int usuarioId;
+    private static String nombre;
+    private static int rolId;
 
-    public static void setUsuarioActual(Usuarios u) {
-        usuarioActual = u;
+    public static void setUsuarioActual(int id, String nom, int rol) {
+        usuarioId = id;
+        nombre = nom;
+        rolId = rol;
     }
 
-    public static Usuarios getUsuarioActual() {
-        return usuarioActual;
-    }
+    public static int getUsuarioId() { return usuarioId; }
+    public static String getNombre() { return nombre; }
+    public static int getRolId() { return rolId; }
 
     public static void cerrar() {
-        usuarioActual = null;
+        usuarioId = 0;
+        nombre = null;
+        rolId = 0;
     }
 }

@@ -7,6 +7,7 @@ package Red;
 import Dominio.Turnos;
 import Servicios.AtencionService;
 import Servicios.TurnoService;
+import Servicios.UsuarioService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -117,6 +118,23 @@ public HiloCliente(Socket socket, ServidorCentral servidor, TurnoService turnoSe
                     
                     atencionService.terminarTramite(atencionIdFin, turnoIdFin, notas);
                     salida.println("OK;Tramite Finalizado");
+                    break;
+                    
+                case "LOGIN":
+                    System.out.println("Intentando login con: " + partes[1] + " / " + partes[2]);
+                    String usuario = partes[1];
+                    String clave = partes[2];
+    
+                     // Usamos el UsuarioService que ya tiene el servidor
+                     UsuarioService usuarioService = new UsuarioService(new DataAccesObject.UsuariosDAO());
+                        Dominio.Usuarios u = usuarioService.login(usuario, clave);
+    
+                    if (u != null) {
+                        // Respuesta: OK;usuarioId;nombre;rolId
+                        salida.println("OK;" + u.getUsuarioId() + ";" + u.getNombre() + ";" + u.getRolId());
+                    } else {
+                        salida.println("ERROR;Credenciales incorrectas");
+                    }
                     break;
                     
                 default:

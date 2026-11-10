@@ -34,11 +34,11 @@ public class OperadorVentanillaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cliente = App.getClienteSocket();
-        Usuarios u = Sesion.getUsuarioActual();
-        if (u != null) {
-            lblUsuario.setText("Usuario: " + u.getNombre());
-            lblTitulo.setText("OPERADOR - Ventanilla " + ventanillaId);
-        }
+        
+        if (Sesion.getNombre() != null) {
+    lblUsuario.setText("Usuario: " + Sesion.getNombre());
+    lblTitulo.setText("OPERADOR - Ventanilla " + ventanillaId);
+    }
         lblEstadoVentanilla.setText("● Disponible");
         lblTurnoActual.setText("---");
 
