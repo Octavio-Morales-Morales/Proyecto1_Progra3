@@ -1,17 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package Repositorios;
-import Dominio.Usuarios;
 
-/**
- *
- * @author COTO
- */
+import Dominio.Usuarios;
+import java.util.List;
+import java.util.Optional;
+
 public interface InterfaceUsuarios {
-   Usuarios autenticar(String nombreusuario, String Contraseña);
-   void crear(Usuarios usuario);
-   void actualizar(Usuarios usuario);
-   
+    Usuarios autenticar(String nombreusuario, String Contraseña);
+
+    void crear(Usuarios usuario);
+
+    void actualizar(Usuarios usuario);
+
+    Optional<Usuarios> buscarPorId(int usuarioId);
+
+    Optional<Usuarios> buscarPorUsuario(String nombreUsuario);
+
+    List<Usuarios> listar();
 }

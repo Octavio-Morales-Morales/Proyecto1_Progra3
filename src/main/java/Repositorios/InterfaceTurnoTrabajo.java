@@ -1,18 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package Repositorios;
 
-import java.util.List;
 import Dominio.TurnoTrabajo;
-/**
- *
- * @author moral
- */
-public interface InterfaceTurnoTrabajo {
-    int registrarEntrada(int funcionarioId);
-    void registrarSalida(int turnoTrabajoId);
-    List<TurnoTrabajo> consultarJornadasPorFuncionario(int funcionarioId);
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
+public interface InterfaceTurnoTrabajo {
+    void crear(TurnoTrabajo turnoTrabajo);
+
+    void actualizar(TurnoTrabajo turnoTrabajo);
+
+    Optional<TurnoTrabajo> buscarPorId(int turnoTrabajoId);
+
+    Optional<TurnoTrabajo> buscarVigente(int funcionarioId, LocalDateTime momento);
+
+    List<TurnoTrabajo> listarPorFuncionario(int funcionarioId);
+
+    boolean existeTraslape(int funcionarioId, LocalDateTime entrada, LocalDateTime salida, int excluirId);
 }

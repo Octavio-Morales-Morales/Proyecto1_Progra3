@@ -1,85 +1,120 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Red;
 
-import DataAccesObject.AtencionDAO;
-import DataAccesObject.TurnoDAO;
-import Repositorios.InterfaceAtencion;
-import Repositorios.InterfaceTurno;
-import Servicios.AtencionService;
-import Servicios.TurnoService;
+import Configuracion.FabricaServicios;
+import Dominio.LlamadoTurno;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- *
- * @author moral
- */
 public class ServidorCentral {
-    private static final int PUERTO = 12345;
-    private TurnoService turnoService;
-    private AtencionService atencionService;
-    private final Set<HiloCliente> pantallasConectadas = Collections.synchronizedSet(new HashSet<>());
-    
-    public void iniciarServidor(){
-        System.out.println("Inicializando componentes ");
-    
-        try{
-            
-            InterfaceTurno turnoDAO = new TurnoDAO();
-            InterfaceAtencion atencionDAO = new AtencionDAO();
-            this.turnoService = new TurnoService(turnoDAO);
-            this.atencionService = new AtencionService(atencionDAO, turnoDAO);
-            
-            System.out.println("Datos y servicios cargados ");
-            
-        }catch (Exception e) {
-            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
-            return;
-        }
-        
-        try (ServerSocket serverSocket = new ServerSocket(PUERTO)){
-            System.err.println("Escuchando en el puerto: " + PUERTO + " Y esperando conexiones de clientes");
-            
-            while(true){
-                Socket socketCliente = serverSocket.accept();
-                System.out.println("Nueva conexion recibida desde "+ socketCliente.getInetAddress());
-                HiloCliente manejador = new HiloCliente(socketCliente, this, turnoService, atencionService);
-                Thread hilo = new Thread(manejador);
+    private static final int PUERTO = Protocolo.PUERTO;
+
+    private final int puerto;
+    private final FabricaServicios fabrica;
+    private final Set<HiloCliente> pantallasConectadas = new CopyOnWriteArraySet<>();
+    private final Set<HiloCliente> clientesConectados = new CopyOnWriteArraySet<>();
+    private final Map<Integer, HiloCliente> ventanillasEnUso = new ConcurrentHashMap<>();
+    private final AtomicInteger contadorClientes = new AtomicInteger();
+    private volatile ServerSocket serverSocket;
+
+    public ServidorCentral() {
+        this(PUERTO, null);
+    }
+
+    public ServidorCentral(int puerto, FabricaServicios fabrica) {
+        this.puerto = puerto;
+        this.fabrica = fabrica;
+    }
+
+    public void iniciarServidor() {
+        System.out.println("Inicializando componentes...");
+        FabricaServicios servicios = fabrica != null ? fabrica : FabricaServicios.get();
+
+        servicios.ventanillas().agregarObservador(this::notificarNuevoLlamado);
+
+        try (ServerSocket servidor = new ServerSocket(puerto)) {
+            this.serverSocket = servidor;
+            System.out.println("Servidor Central escuchando en el puerto " + puerto);
+
+            while (!servidor.isClosed()) {
+                Socket socketCliente = servidor.accept();
+                int numero = contadorClientes.incrementAndGet();
+                System.out.println("Nueva conexion #" + numero + " desde " + socketCliente.getInetAddress());
+                HiloCliente manejador = new HiloCliente(socketCliente, this, servicios);
+                clientesConectados.add(manejador);
+                Thread hilo = new Thread(manejador, "cliente-" + numero);
+                hilo.setDaemon(true);
                 hilo.start();
             }
-            
-        }catch(IOException e){
-            System.err.println("Error crítico en el socket del servidor: " + e.getMessage());
-            
+        } catch (IOException e) {
+            if (serverSocket == null || !serverSocket.isClosed()) {
+                System.err.println("Error crítico en el socket del servidor: " + e.getMessage());
+            }
         }
     }
-    
-    public void registrarPantallaPublica(HiloCliente pantalla){
+
+    public void detener() {
+        try {
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error al detener el servidor: " + e.getMessage());
+        }
+        for (HiloCliente cliente : clientesConectados) {
+            cliente.cerrar();
+        }
+    }
+
+    public void clienteDesconectado(HiloCliente cliente) {
+        clientesConectados.remove(cliente);
+    }
+
+    public void registrarPantallaPublica(HiloCliente pantalla) {
         pantallasConectadas.add(pantalla);
-        
+        System.out.println("Pantallas conectadas: " + pantallasConectadas.size());
     }
-    public void removerPantallaPublica(HiloCliente pantalla){
+
+    public void removerPantallaPublica(HiloCliente pantalla) {
         pantallasConectadas.remove(pantalla);
-        
     }
-    public void notificarNuevoLlamado(String codigoTurno, int numeroVentanilla){
-        String mensajeBroadcast = "Pantalla_Actualizar; "+ codigoTurno + ";" + numeroVentanilla;
-        
-        synchronized(pantallasConectadas){
-        for(HiloCliente pantalla : pantallasConectadas){
-            pantalla.enviarMensajeAsincrono(mensajeBroadcast);
-            
+
+    public void notificarNuevoLlamado(LlamadoTurno llamado) {
+        String mensaje = Protocolo.armar(Protocolo.LLAMADO, llamado.getCodigoTurno(),
+                llamado.getNumeroVentanilla(), llamado.getHoraLlamado());
+        for (HiloCliente pantalla : pantallasConectadas) {
+            pantalla.enviarMensajeAsincrono(mensaje);
         }
     }
+
+    public int cantidadPantallas() {
+        return pantallasConectadas.size();
     }
-    public static void main (String[] args){
+
+    public boolean reservarVentanilla(int ventanillaId, HiloCliente cliente) {
+        HiloCliente actual = ventanillasEnUso.putIfAbsent(ventanillaId, cliente);
+        return actual == null || actual == cliente;
+    }
+
+    public void liberarVentanilla(int ventanillaId, HiloCliente cliente) {
+        ventanillasEnUso.remove(ventanillaId, cliente);
+    }
+
+    public static boolean estaEscuchando(String host, int puerto) {
+        try (Socket prueba = new Socket()) {
+            prueba.connect(new java.net.InetSocketAddress(host, puerto), 500);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
         new ServidorCentral().iniciarServidor();
     }
 }

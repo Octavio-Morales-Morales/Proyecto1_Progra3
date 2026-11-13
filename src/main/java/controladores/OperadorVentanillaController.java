@@ -1,137 +1,211 @@
 package controladores;
 
-import Red.ClienteSocket;
-import Dominio.Usuarios;
+import Dominio.DetalleAtencion;
+import Dominio.Sesion;
+import Dominio.TurnoEnVentanilla;
+import Dominio.Ventanillas;
+import Red.ClienteTurnos;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
+import java.util.concurrent.Callable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.paint.Color;
 
 public class OperadorVentanillaController implements Initializable {
+    private static final DateTimeFormatter HORA = DateTimeFormatter.ofPattern("HH:mm");
+    private static final int TAMANO_HISTORIAL = 10;
 
-    @FXML private Label lblTitulo;
-    @FXML private Label lblUsuario;
-    @FXML private Label lblEstadoVentanilla;
-    @FXML private Label lblTurnoActual;
-    @FXML private Label lblServicioActual;
-    @FXML private Button btnSiguiente;
-    @FXML private Button btnFinalizar;
-    @FXML private Button btnVolverLlamar;
-    @FXML private Button btnNoDisponible;
-    @FXML private ListView<String> lstHistorial;
+    @FXML
+    private Label lblTitulo;
+    @FXML
+    private Label lblUsuario;
+    @FXML
+    private Label lblEstadoVentanilla;
+    @FXML
+    private Label lblTurnoActual;
+    @FXML
+    private Label lblServicioActual;
+    @FXML
+    private Button btnSiguiente;
+    @FXML
+    private Button btnFinalizar;
+    @FXML
+    private Button btnVolverLlamar;
+    @FXML
+    private Button btnNoDisponible;
+    @FXML
+    private ListView<String> lstHistorial;
 
-    private ClienteSocket cliente;
-    private int atencionActualId = -1;
-    private int turnoActualId = -1;
-    private int ventanillaId = 1;          // Temporal: cambia según el operador
-    private int funcionarioId = 1;         // Temporal
+    private ClienteTurnos cliente;
+    private Ventanillas ventanilla;
+    private TurnoEnVentanilla turnoActual;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cliente = App.getClienteSocket();
-        
-        if (Sesion.getNombre() != null) {
-    lblUsuario.setText("Usuario: " + Sesion.getNombre());
-    lblTitulo.setText("OPERADOR - Ventanilla " + ventanillaId);
-    }
-        lblEstadoVentanilla.setText("● Disponible");
-        lblTurnoActual.setText("---");
-
-        btnSiguiente.setOnAction(e -> solicitarSiguiente());
-        btnFinalizar.setOnAction(e -> finalizarAtencion());
+        btnSiguiente.setOnAction(e -> llamarSiguiente());
+        btnFinalizar.setOnAction(e -> iniciarOFinalizar());
         btnVolverLlamar.setOnAction(e -> volverALlamar());
-        btnNoDisponible.setOnAction(e -> marcarNoDisponible());
+        btnNoDisponible.setOnAction(e -> cambiarDisponibilidad());
+        bloquearBotones();
     }
 
-    private void solicitarSiguiente() {
-        if (cliente == null) return;
-        new Thread(() -> {
-            try {
-                // Servicios que puede atender esta ventanilla (ajusta según BD)
-                String cmd = "SOLICITAR_SIGUIENTE;" + ventanillaId + ";" + funcionarioId + ";1,2,3,4";
-                String resp = cliente.enviarMensaje(cmd);
-
-                Platform.runLater(() -> {
-                    if (resp != null && resp.startsWith("OK;")) {
-                        String[] p = resp.split(";");
-                        String codigo = p[1];
-                        turnoActualId = Integer.parseInt(p[2]);
-                        atencionActualId = Integer.parseInt(p[3]);
-
-                        lblTurnoActual.setText(codigo);
-                        lblServicioActual.setText("En atención");
-                        lstHistorial.getItems().add(0, codigo + " - Llamado");
-                    } else {
-                        mostrarError("No hay turnos o error: " + resp);
-                    }
-                });
-            } catch (Exception ex) {
-                Platform.runLater(() -> mostrarError(ex.getMessage()));
-            }
-        }).start();
+    public void iniciar(Sesion sesion, Ventanillas ventanillaAbierta, ClienteTurnos cliente) {
+        this.cliente = cliente;
+        this.ventanilla = ventanillaAbierta;
+        lblTitulo.setText("OPERADOR - Ventanilla " + ventanillaAbierta.getNumero());
+        lblUsuario.setText("Usuario: " + sesion.getNombreVisible());
+        refrescar();
     }
 
-    private void finalizarAtencion() {
-        if (atencionActualId <= 0 || turnoActualId <= 0) {
-            mostrarError("No hay turno en atención.");
+    private void llamarSiguiente() {
+        ejecutar(cliente::llamarSiguiente);
+    }
+
+    private void iniciarOFinalizar() {
+        if (turnoActual == null) {
             return;
         }
-        new Thread(() -> {
-            try {
-                String cmd = "TERMINAR_TRAMITE;" + atencionActualId + ";" + turnoActualId + ";Finalizado";
-                String resp = cliente.enviarMensaje(cmd);
-                Platform.runLater(() -> {
-                    if (resp != null && resp.startsWith("OK")) {
-                        lstHistorial.getItems().add(0, lblTurnoActual.getText() + " - Finalizado");
-                        lblTurnoActual.setText("---");
-                        lblServicioActual.setText("-");
-                        atencionActualId = -1;
-                        turnoActualId = -1;
-                    } else {
-                        mostrarError(resp);
-                    }
-                });
-            } catch (Exception ex) {
-                Platform.runLater(() -> mostrarError(ex.getMessage()));
-            }
-        }).start();
+        if (turnoActual.estaLlamado()) {
+            ejecutar(cliente::iniciarAtencion);
+            return;
+        }
+        TextInputDialog dialogo = new TextInputDialog();
+        dialogo.setTitle("Finalizar atencion");
+        dialogo.setHeaderText("Turno " + turnoActual.getCodigoTurno());
+        dialogo.setContentText("Observaciones (opcional):");
+        Optional<String> observaciones = dialogo.showAndWait();
+        if (observaciones.isPresent()) {
+            ejecutar(() -> {
+                cliente.finalizarAtencion(observaciones.get());
+                return null;
+            });
+        }
     }
 
     private void volverALlamar() {
-        // Por ahora solo muestra mensaje. Se puede mejorar después.
-        if (lblTurnoActual.getText().equals("---")) {
-            mostrarError("No hay turno para volver a llamar.");
-            return;
-        }
-        mostrarInfo("Turno " + lblTurnoActual.getText() + " vuelto a llamar.");
+        ejecutar(() -> {
+            cliente.volverALlamar();
+            return null;
+        });
     }
 
-    private void marcarNoDisponible() {
-        if (lblEstadoVentanilla.getText().contains("Disponible")) {
-            lblEstadoVentanilla.setText("● No disponible");
-            lblEstadoVentanilla.setStyle("-fx-text-fill: #c62828;");
+    private void cambiarDisponibilidad() {
+        boolean noDisponible = ventanilla != null && Ventanillas.NO_DISPONIBLE.equals(ventanilla.getEstado());
+        ejecutar(() -> {
+            if (noDisponible) {
+                cliente.marcarDisponible();
+            } else {
+                cliente.marcarNoDisponible();
+            }
+            return null;
+        });
+    }
+
+    private void ejecutar(Callable<?> accion) {
+        bloquearBotones();
+        Ui.enSegundoPlano(accion,
+                resultado -> refrescar(),
+                mensaje -> {
+                    Ui.aviso(mensaje);
+                    refrescar();
+                });
+    }
+
+    private static class EstadoPantalla {
+        Ventanillas ventanilla;
+        TurnoEnVentanilla turno;
+        List<DetalleAtencion> historial;
+    }
+
+    private void refrescar() {
+        Ui.enSegundoPlano(() -> {
+            EstadoPantalla estado = new EstadoPantalla();
+            estado.ventanilla = cliente.consultarVentanilla();
+            estado.turno = cliente.turnoActual().orElse(null);
+            estado.historial = cliente.historial(TAMANO_HISTORIAL);
+            return estado;
+        }, this::mostrar, mensaje -> {
+            pintarEstado("● " + mensaje, Color.web("#c62828"));
+            bloquearBotones();
+            btnSiguiente.setText("REINTENTAR");
+            btnSiguiente.setDisable(false);
+            btnSiguiente.setOnAction(e -> {
+                btnSiguiente.setText("SIGUIENTE TURNO");
+                btnSiguiente.setOnAction(ev -> llamarSiguiente());
+                refrescar();
+            });
+        });
+    }
+
+    private void mostrar(EstadoPantalla estado) {
+        ventanilla = estado.ventanilla;
+        turnoActual = estado.turno;
+        boolean noDisponible = Ventanillas.NO_DISPONIBLE.equals(ventanilla.getEstado());
+
+        if (!ventanilla.isActivo()) {
+            pintarEstado("● Inactiva", Color.web("#c62828"));
+        } else if (noDisponible) {
+            pintarEstado("● No disponible", Color.web("#c62828"));
+        } else if (turnoActual != null) {
+            pintarEstado(turnoActual.estaLlamado() ? "● Llamando" : "● Atendiendo", Color.web("#ef6c00"));
         } else {
-            lblEstadoVentanilla.setText("● Disponible");
-            lblEstadoVentanilla.setStyle("-fx-text-fill: #2e7d32;");
+            pintarEstado("● Disponible", Color.web("#2e7d32"));
         }
+
+        if (turnoActual == null) {
+            lblTurnoActual.setText("---");
+            lblServicioActual.setText("Servicio: -");
+        } else {
+            lblTurnoActual.setText(turnoActual.getCodigoTurno());
+            lblServicioActual.setText("Servicio: " + turnoActual.getNombreServicio()
+                    + (turnoActual.estaLlamado() ? "   (esperando a la persona)" : "   (en atencion)"));
+        }
+
+        btnSiguiente.setDisable(turnoActual != null || noDisponible || !ventanilla.isActivo());
+        btnFinalizar.setDisable(turnoActual == null);
+        btnFinalizar.setText(turnoActual != null && turnoActual.estaLlamado() ? "INICIAR ATENCION" : "FINALIZAR");
+        btnVolverLlamar.setDisable(turnoActual == null || !turnoActual.estaLlamado());
+        btnNoDisponible.setText(noDisponible ? "Marcar Disponible" : "Marcar No Disponible");
+        btnNoDisponible.setDisable(turnoActual != null || !ventanilla.isActivo());
+
+        List<String> lineas = new ArrayList<>();
+        for (DetalleAtencion d : estado.historial) {
+            lineas.add(describir(d));
+        }
+        lstHistorial.getItems().setAll(lineas);
     }
 
-    private void mostrarError(String msg) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setHeaderText(null);
-        a.setContentText(msg);
-        a.showAndWait();
+    private void pintarEstado(String texto, Color color) {
+        lblEstadoVentanilla.setText(texto);
+        lblEstadoVentanilla.setTextFill(color);
     }
 
-    private void mostrarInfo(String msg) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setHeaderText(null);
-        a.setContentText(msg);
-        a.showAndWait();
+    private static String describir(DetalleAtencion d) {
+        StringBuilder sb = new StringBuilder(d.getCodigoTurno()).append("  ·  ").append(d.getServicio());
+        if (d.getHoraLlamado() != null) {
+            sb.append("  ·  llamado ").append(d.getHoraLlamado().format(HORA));
+        }
+        if (d.getMinutosAtencion() != null) {
+            sb.append("  ·  atendido en ").append(d.getMinutosAtencion()).append(" min");
+        } else {
+            sb.append("  ·  ").append(d.getEstadoFinal());
+        }
+        return sb.toString();
+    }
+
+    private void bloquearBotones() {
+        btnSiguiente.setDisable(true);
+        btnFinalizar.setDisable(true);
+        btnVolverLlamar.setDisable(true);
+        btnNoDisponible.setDisable(true);
     }
 }

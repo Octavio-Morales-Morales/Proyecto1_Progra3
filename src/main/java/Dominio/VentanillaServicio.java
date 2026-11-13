@@ -1,34 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio;
 
-import java.io.Serializable;
-
-/**
- *
- * @author COTO
- */
-public class VentanillaServicio implements Serializable {
+public class VentanillaServicio {
     private int ventanillaId;
     private int servicioId;
-    private boolean activo;
-    
-    public VentanillaServicio(){
-        
+    private boolean activo = true;
+
+    public VentanillaServicio() {
     }
-    public VentanillaServicio(int ventanillaId, int servicioId, boolean activo){
-        this.ventanillaId = ventanillaId;
-        this.servicioId = servicioId;
-        this.activo =activo;
+
+    public VentanillaServicio(int ventanillaId, int servicioId, boolean activo) {
+        setVentanillaId(ventanillaId);
+        setServicioId(servicioId);
+        setActivo(activo);
     }
-        public int getVentanillaId() {
+
+    public int getVentanillaId() {
         return ventanillaId;
     }
 
     public void setVentanillaId(int ventanillaId) {
-        this.ventanillaId = ventanillaId;
+        this.ventanillaId = Validaciones.idPositivo(ventanillaId, "La ventanilla");
     }
 
     public int getServicioId() {
@@ -36,7 +27,7 @@ public class VentanillaServicio implements Serializable {
     }
 
     public void setServicioId(int servicioId) {
-        this.servicioId = servicioId;
+        this.servicioId = Validaciones.idPositivo(servicioId, "El servicio");
     }
 
     public boolean isActivo() {

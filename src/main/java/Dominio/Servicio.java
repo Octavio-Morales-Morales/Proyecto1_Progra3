@@ -1,39 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio;
 
-import java.io.Serializable;
-/**
- *
- * @author moral
- */
-public class Servicio implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-    
+public class Servicio {
     private int servicioId;
-    private String nombre;    
-    private String letraCodigo;
-    private boolean activo;
-    
+    private String codigo;
+    private String nombre;
+    private String descripcion;
+    private boolean activo = true;
+
     public Servicio() {
     }
-    
-    public Servicio(int servicioId, String nombre, String letraCodigo, boolean activo) {
-        this.servicioId = servicioId;
-        this.nombre = nombre;
-        this.letraCodigo = letraCodigo;
-        this.activo = activo;
+
+    public Servicio(int servicioId, String codigo, String nombre, String descripcion, boolean activo) {
+        setServicioId(servicioId);
+        setCodigo(codigo);
+        setNombre(nombre);
+        setDescripcion(descripcion);
+        setActivo(activo);
     }
-    
+
     public int getServicioId() {
         return servicioId;
     }
 
     public void setServicioId(int servicioId) {
-        this.servicioId = servicioId;
+        this.servicioId = Validaciones.idPropio(servicioId, "El id del servicio");
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        String limpio = Validaciones.texto(codigo, "El codigo del servicio", 50).toUpperCase();
+        if (limpio.contains(" ")) {
+            throw new IllegalArgumentException("El codigo del servicio no puede tener espacios.");
+        }
+        this.codigo = limpio;
     }
 
     public String getNombre() {
@@ -41,15 +43,15 @@ public class Servicio implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = Validaciones.texto(nombre, "El nombre del servicio", 100);
     }
 
-    public String getLetraCodigo() {
-        return letraCodigo;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setLetraCodigo(String letraCodigo) {
-        this.letraCodigo = letraCodigo;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = Validaciones.textoOpcional(descripcion, "La descripcion del servicio", 255);
     }
 
     public boolean isActivo() {
@@ -58,5 +60,10 @@ public class Servicio implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    @Override
+    public String toString() {
+        return codigo + " - " + nombre;
     }
 }

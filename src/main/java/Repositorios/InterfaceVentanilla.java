@@ -1,15 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package Repositorios;
+
 import Dominio.Ventanillas;
 import java.util.List;
-/**
- *
- * @author COTO
- */
+import java.util.Optional;
+
 public interface InterfaceVentanilla {
     void cambiarEstado(int ventanillaId, String estado);
-    List<Ventanillas> ListaVentanillasActivas();
+
+    List<Integer> ListaVentanillasActivas();
+
+    void crear(Ventanillas ventanilla);
+
+    void actualizar(Ventanillas ventanilla);
+
+    Optional<Ventanillas> buscarPorId(int ventanillaId);
+
+    Optional<Ventanillas> buscarPorNumero(int numero);
+
+    List<Ventanillas> listar();
 }

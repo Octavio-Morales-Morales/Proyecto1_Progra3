@@ -1,15 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package Repositorios;
-import java.util.List;
+
 import Dominio.Servicio;
-/**
- *
- * @author COTO
- */
+import java.util.List;
+import java.util.Optional;
+
 public interface InterfaceServicio {
-    List<Servicio> ListarServiciosDisponibles();
+    List<String> ListarServiciosDisponibles();
+
     int obtenerNombreServicio(String nombreServicio);
+
+    void crear(Servicio servicio);
+
+    void actualizar(Servicio servicio);
+
+    Optional<Servicio> buscarPorId(int servicioId);
+
+    Optional<Servicio> buscarPorCodigo(String codigo);
+
+    List<Servicio> listarActivos();
+
+    List<Servicio> listarTodos();
 }
