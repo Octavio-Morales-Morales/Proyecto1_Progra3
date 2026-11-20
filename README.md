@@ -18,4 +18,6 @@ SISTEMA DISTRIBUIDO DE GESTION DE TURNOS - COMO EJECUTAR
       -Dservidor.host=IP_DEL_SERVIDOR      (y opcional -Dservidor.puerto=12345)
    En NetBeans: Propiedades del proyecto -> Run -> VM Options.
 
+4. VIDEO DE DEFENSA 
+   https://drive.google.com/drive/folders/17ZlTfiNJvzsqRmDJ1HCALejo6ZPl8J5K?usp=sharing
 
